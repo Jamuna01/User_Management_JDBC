@@ -1,28 +1,30 @@
 package dao;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import DbUtil.Dbutil;
+import DbUtil.QueryUtil;
 import model.User;
 
 public class UserDaoImpl implements UserDao
 {
-
-	public static final String SAVE_SQL = "insert into user_tbl(user_name, password, mobile_no, salary, dob, enable)values(?,?,?,?,?,?)";
 	
 	public int saveUser(User user) throws Exception 
 	{
 		int saved = 0;
 		try
 		{
-			PreparedStatement ps = Dbutil.getConnection().prepareStatement(SAVE_SQL);
+			PreparedStatement ps = Dbutil.getConnection().prepareStatement(QueryUtil.SAVE_SQL);
 			ps.setString(1, user.getUserName());
 			ps.setString(2, user.getPassword());
 			ps.setLong(3, user.getMobileNo());
 			ps.setDouble(4, user.getSalary());
-			//user.setDob(5, null);
+			ps.setDate(5, Date.valueOf(user.getDob()));
 			ps.setBoolean(6, user.isEnable());
 			saved = ps.executeUpdate();
 		
@@ -34,24 +36,82 @@ public class UserDaoImpl implements UserDao
 		return saved;
 	}
 
-	public int updateUser(User user) {
+	public int updateUser(User user)
+	{
+		int updated = 0;
+		try
+		{
+			PreparedStatement ps = Dbutil.getConnection().prepareStatement(QueryUtil.UPDATE_SQL);
+			ps.setString(1, user.getUserName());
+			ps.setString(2, user.getPassword());
+			ps.setLong(3, user.getMobileNo());
+			ps.setDouble(4, user.getSalary());
+			ps.setDate(5, Date.valueOf(user.getDob()));
+			ps.setBoolean(6, user.isEnable());
+			ps.setInt(7, user.getId());
+			updated = ps.executeUpdate();
 		
-		return 0;
+		}
+	
+		 catch (Exception e)
+		{
+			
+			e.printStackTrace();
+		}
+		return updated;
+		
 	}
 
-	public int deleteUser(int id) {
+	public int deleteUser(int id) 
+	{
 		
-		return 0;
+		int deleted = 0;
+		try
+		{
+			PreparedStatement ps = Dbutil.getConnection().prepareStatement(QueryUtil.DELETE_SQL);
+			ps.setInt(1, id);
+			deleted = ps.executeUpdate();
+		}
+	
+		 catch (Exception e)
+		{
+			
+			e.printStackTrace();
+		}
+		return deleted;
 	}
 
-	public User getUserById(int id) {
+	public User getUserById(int id) 
+	{
 		
 		return null;
 	}
 	
-	public List<User> getAllUser() {
-		
-		return null;
+	public List<User> getAllUser()
+	{
+		List<User> userList = new ArrayList<>();
+		try
+		{
+			PreparedStatement ps = Dbutil.getConnection().prepareStatement(QueryUtil.LIST_SQL);
+			
+			ResultSet rs =  ps.executeUpdate();
+			while(rs.next())
+			{
+				User user = new User();
+				user.setId(rs.getInt("id"));
+				user.setUserName(rs.getString("user_name"));
+				user.setPassword(rs.getString("password"));
+				user.setDob(rs.getDate("dob").toLocalDate());
+				
+			}
+		}
+	
+		 catch (Exception e)
+		{
+			
+			e.printStackTrace();
+		}
+		return userList;
 	}
 	
 }
