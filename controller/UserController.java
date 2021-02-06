@@ -1,5 +1,7 @@
 package controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -13,6 +15,7 @@ public class UserController
 	public static void main(String[] args)
 	{
 		userService userService = new userServiceImp();
+		String decision = "";
 		
 		do
 		{
@@ -64,20 +67,60 @@ public class UserController
 			case "list":
 				List<User> userList = userService.getAllUser();
 				
-				userList.forEach(user-> {
-					System.out.println("User id is: "+ user.getId());
-					System.out.println("User name is: "+ user.getUserName());
-					System.out.println("User password is: "+ user.getPassword());
-					System.out.println("User mobile number is: "+ user.getMobileNo());
-					System.out.println("User salary is: "+ user.getSalary());
-					System.out.println("User DOB is: "+ user.getDob());
-					System.out.println("Is user enabled? "+ user.isEnable());
+				userList.forEach(user1 -> {
+					System.out.println("User id is: "+ user1.getId());
+					System.out.println("User name is: "+ user1.getUserName());
+					System.out.println("User password is: "+ user1.getPassword());
+					System.out.println("User mobile number is: "+ user1.getMobileNo());
+					System.out.println("User salary is: "+ user1.getSalary());
+					System.out.println("User DOB is: "+ user1.getDob());
+					System.out.println("Is user enabled? "+ user1.isEnable());
+					System.out.println("=================================");
 				});
 				break;
+			case "get":
+				int id1 = Integer.parseInt(JOptionPane.showInputDialog("Enter id: "));
+				User user2 = userService.getUserById(id1);
+				System.out.println("User id is: "+ user2.getId());
+				System.out.println("User name is: "+ user2.getUserName());
+				System.out.println("User password is: "+ user2.getPassword());
+				System.out.println("User mobile number is: "+ user2.getMobileNo());
+				System.out.println("User salary is: "+ user2.getSalary());
+				System.out.println("User DOB is: "+ user2.getDob());
+				System.out.println("Is user enabled? "+ user2.isEnable());
+			
+			break;
 				
 				
 			}
+			decision = JOptionPane.showInputDialog("do you want to continue? Enter yes| no: ");
 		}
-		while(true);
+		while(decision.equalsIgnoreCase("yes"));
+	}
+	public static User getUser(String type)
+	{
+		User user = new User();
+		
+		if(type.equalsIgnoreCase("update"))
+		{
+			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter id: "));
+			user.setId(id);
+		}
+		String username = JOptionPane.showInputDialog("Enter username: ");
+		String password = JOptionPane.showInputDialog("Enter password: ");
+		long mobileNo = Long.parseLong(JOptionPane.showInputDialog("Enter mobile number: "));
+		double salary = Double.parseDouble(JOptionPane.showInputDialog("Enter salary: "));
+		String dob = JOptionPane.showInputDialog("Enter dob: ");
+		LocalDate d = LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		boolean enable = Boolean.parseBoolean(JOptionPane.showInputDialog("is user enabled?"));
+		user.setUserName(username);
+		user.setPassword(password);
+		user.setMobile_no(mobileNo);
+		user.setEnable(enable);
+		user.setSalary(salary);
+		user.setDob(d);
+		
+		return user;
 	}
 }
+
