@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 import Service.userService;
 import Service.userServiceImp;
+import enums.OperationTypeEnum;
 import model.User;
 
 public class UserController 
@@ -24,7 +25,7 @@ public class UserController
 			switch(choice)
 			{
 			case "save":
-				User user = new  User();
+				User user = getUser(OperationTypeEnum.SAVE.name());
 				int saved = userService.saveUser(user);
 				if(saved >=1)
 				{
@@ -37,7 +38,8 @@ public class UserController
 				break;
 				
 			case "update":
-				User updateUser = new  User();
+				User updateUser = getUser(OperationTypeEnum.UPDATE.name());
+
 				int updated = userService.updateUser(updateUser);
 				
 				if(updated >=1)
@@ -97,6 +99,7 @@ public class UserController
 		}
 		while(decision.equalsIgnoreCase("yes"));
 	}
+	
 	public static User getUser(String type)
 	{
 		User user = new User();

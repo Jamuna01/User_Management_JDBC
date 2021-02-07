@@ -12,7 +12,7 @@ import model.User;
 public class UserDaoImpl implements UserDao
 {
 	
-	public int saveUser(User user) throws Exception 
+	public int saveUser(User user) 
 	{
 		int saved = 0;
 		try
@@ -29,6 +29,9 @@ public class UserDaoImpl implements UserDao
 		}
 		catch( SQLException e)
 		{
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return saved;
@@ -100,14 +103,16 @@ public class UserDaoImpl implements UserDao
 				user.setEnable(rs.getBoolean("enable"));
 				
 			}
+		
 		}
-	
 		 catch (Exception e)
 		{
 			
 			e.printStackTrace();
 		}
-		return userList;
+		
+	return user;
+		
 	}
 	
 	public List<User> getAllUser()

@@ -6,7 +6,7 @@ import model.User;
 
 public interface UserDao 
 {
-	int saveUser(User user) throws Exception;
+	int saveUser(User user) ;
 	int updateUser(User user);
 	int deleteUser(int  id);
 	
